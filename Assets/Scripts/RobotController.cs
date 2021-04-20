@@ -132,7 +132,7 @@ public class RobotController : MonoBehaviour
         //this.transform.position += this.transform.forward * m_velZ * m_walkSpeed * Time.deltaTime;
         //this.transform.position += this.transform.right * m_velX * m_walkSpeed * Time.deltaTime;
 
-        Debug.Log(vel);
+        Debug.Log("aaa");
 
         //rb.velocity = vel;
 
