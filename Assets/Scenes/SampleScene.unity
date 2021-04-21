@@ -490,7 +490,7 @@ ParticleSystem:
     startLifetime:
       serializedVersion: 2
       minMaxState: 0
-      scalar: 5
+      scalar: 3
       minScalar: 5
       maxCurve:
         serializedVersion: 2
@@ -543,7 +543,7 @@ ParticleSystem:
     startSpeed:
       serializedVersion: 2
       minMaxState: 0
-      scalar: 5
+      scalar: 20
       minScalar: 5
       maxCurve:
         serializedVersion: 2
@@ -981,7 +981,7 @@ ParticleSystem:
     gravityModifier:
       serializedVersion: 2
       minMaxState: 0
-      scalar: 0
+      scalar: 1
       minScalar: 0
       maxCurve:
         serializedVersion: 2
@@ -5241,14 +5241,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9849aaadf9fe4a7409c066bbbdee7e22, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_jumpForce: 10
   cameraScript: {fileID: 2078764820}
+  JUMP_FORCE: 10
   JUMP_CHARGE_TIME: 0.5
-  m_shakeDuration: 0.5
-  m_shakeMagnitude: 0.3
-  m_trunSpeed: 1
+  CAMERA_SHAKE_DURATION: 0.25
+  CAMERA_SHAKE_MAGUNITUDE: 0.1
+  TRUN_SPEED: 10
   m_shockWave: {fileID: 583737027}
-  m_walkSpeed: 10
+  WALK_SPEED: 10
+  BOOST_MOVE_SPEED: 15
   LANDING_RIGIDITY_TIME: 0.5
 --- !u!65 &1103165019
 BoxCollider:
@@ -5735,7 +5736,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2078764816}
   m_LocalRotation: {x: 0.16210929, y: -0, z: -0, w: 0.9867729}
-  m_LocalPosition: {x: 0, y: 5.1, z: -14.4}
+  m_LocalPosition: {x: 0, y: 4.26, z: -11.92}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1103165017}
