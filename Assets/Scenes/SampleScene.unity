@@ -5226,6 +5226,7 @@ Transform:
   - {fileID: 807843095}
   - {fileID: 2078764817}
   - {fileID: 583737025}
+  - {fileID: 2078764817}
   m_Father: {fileID: 0}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -5242,7 +5243,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   cameraScript: {fileID: 2078764820}
+<<<<<<< Updated upstream
   JUMP_FORCE: 10
+=======
+  JUMP_FORCE: 20
+>>>>>>> Stashed changes
   JUMP_CHARGE_TIME: 0.5
   CAMERA_SHAKE_DURATION: 0.25
   CAMERA_SHAKE_MAGUNITUDE: 0.1
@@ -5740,7 +5745,11 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1103165017}
+<<<<<<< Updated upstream
   m_RootOrder: 1
+=======
+  m_RootOrder: 2
+>>>>>>> Stashed changes
   m_LocalEulerAnglesHint: {x: 18.659, y: 0, z: 0}
 --- !u!81 &2078764818
 AudioListener:
