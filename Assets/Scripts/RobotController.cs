@@ -4,7 +4,9 @@ using UnityEngine;
 
 public class RobotController : MonoBehaviour
 {
+    //Rigidbosy
     Rigidbody rb;
+    //カメラのスクリプト
     public CameraController cameraScript;
 
     //ジャンプ力
@@ -42,6 +44,8 @@ public class RobotController : MonoBehaviour
     //着地フラグ
     bool m_isStanding;
 
+    private CharacterController charaController;
+
 
 
     // Start is called before the first frame update
@@ -67,30 +71,38 @@ public class RobotController : MonoBehaviour
         //スペースキー入力でジャンプ
         if(Input.GetKeyDown(KeyCode.Space) && m_isJump == false && m_jumpChargeTimer >= JUMP_CHARGE_TIME)
         {
-            //ジャンプしたフラグを立てる
+            //ジャンプフラグを立てる
             m_isJump = true;
         }
+        //ジャンプフラグが立ったら
         if(m_isJump == true)
         {
+            //ジャンプのチャージ時間のタイマーを減算
             m_jumpChargeTimer -= Time.deltaTime;
-
+            //タイマーが0になったら
             if(m_jumpChargeTimer < 0.0f)
             {
+                //上方向に力を加える
                 rb.AddForce(0, JUMP_FORCE, 0, ForceMode.Impulse);
+                //ジャンプのフラグを消す
                 m_isJump = false;
             }
         }
 
-        //着地硬直の時間
+        //着地硬直
         if(m_isRigidity == true)
         {
             //着地したら移動量を無くす
             rb.velocity = new Vector3(0.0f, 0.0f, 0.0f);
             
+            //着地硬直のタイマーを減算
             m_landingRigidityTimer -= Time.deltaTime;
+            //タイマーが0になったら
             if(m_landingRigidityTimer <= 0.0f)
             {
+                //着地硬直を解除
                 m_isRigidity = false;
+                //タイマーの時間をを再設定
                 m_landingRigidityTimer = LANDING_RIGIDITY_TIME;
             }
         }
@@ -98,13 +110,15 @@ public class RobotController : MonoBehaviour
         //着地しているかつ着地硬直がなければ移動、または旋回
         if (m_isStanding == true && m_isRigidity == false)
         {
-            //左右移動
+            //右移動
             if (Input.GetKey(KeyCode.D)) m_velX = 1;
+            //左移動
             else if (Input.GetKey(KeyCode.A)) m_velX = -1;
             else m_velX = 0.0f;
 
-            //前後移動
+            //前移動
             if (Input.GetKey(KeyCode.W)) m_velZ = 1;
+            //後移動
             else if (Input.GetKey(KeyCode.S)) m_velZ = -1;
             else m_velZ = 0.0f;
 
@@ -137,10 +151,16 @@ public class RobotController : MonoBehaviour
         moveForward.Normalize();
 
         //歩行
-        if(Input.GetKey(KeyCode.LeftShift) != true)
+        if (Input.GetKey(KeyCode.LeftShift) != true)
+        {
             rb.velocity = moveForward * WALK_SPEED + new Vector3(0, rb.velocity.y, 0);
-        //スラスター移動
-        else rb.AddForce(moveForward * BOOST_MOVE_SPEED, ForceMode.Force);  
+        }
+        //ブースト移動
+        else if (Input.GetKey(KeyCode.LeftShift) == true)
+        {
+            rb.AddForce(moveForward * BOOST_MOVE_SPEED, ForceMode.Force);
+        }
+
 
 
         //this.transform.position += this.transform.forward * m_velZ * m_walkSpeed * Time.deltaTime;
@@ -156,6 +176,8 @@ public class RobotController : MonoBehaviour
         //rb.AddForce(vel, ForceMode.Force);
     }
 
+    
+    //着地した瞬間の処理
     private void OnTriggerEnter(Collider other)
     {
 
@@ -176,11 +198,13 @@ public class RobotController : MonoBehaviour
 
     }
 
+    //着地時の処理
     private void OnTriggerStay(Collider other)
     {
         m_isStanding = true;
     }
 
+    //地面から脚が離れた瞬間の処理
     private void OnTriggerExit(Collider other)
     {
         m_isStanding = false;
