@@ -5241,15 +5241,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9849aaadf9fe4a7409c066bbbdee7e22, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_jumpForce: 10
+  m_jumpForce: 15
   cameraScript: {fileID: 2078764820}
   JUMP_CHARGE_TIME: 0.5
   m_shakeDuration: 0.5
   m_shakeMagnitude: 0.3
-  m_trunSpeed: 1
+  m_trunSpeed: 20
   m_shockWave: {fileID: 583737027}
   m_walkSpeed: 10
   LANDING_RIGIDITY_TIME: 0.5
+  BOOST_SPEED_MAX: 200
 --- !u!65 &1103165019
 BoxCollider:
   m_ObjectHideFlags: 0
