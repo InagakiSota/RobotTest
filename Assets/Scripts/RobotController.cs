@@ -5,34 +5,29 @@ using UnityEngine;
 public class RobotController : MonoBehaviour
 {
     Rigidbody rb;
+    [SerializeField] float m_jumpForce;
+    bool m_isJump;
+
     public CameraController cameraScript;
 
-    //ジャンプ力
-    [SerializeField] float JUMP_FORCE;
-    //ジャンプ中のフラグ
-    bool m_isJump;
     //ジャンプの溜め時間
     [SerializeField] float JUMP_CHARGE_TIME = 1.0f;
     //ジャンプの溜め時間のタイマー
     float m_jumpChargeTimer = 1.0f;
     //カメラ振動の時間
-    [SerializeField] float CAMERA_SHAKE_DURATION = 0.25f;
+    [SerializeField] float m_shakeDuration = 0.25f;
     //カメラ振動の強さ
-    [SerializeField] float CAMERA_SHAKE_MAGUNITUDE = 0.1f;
+    [SerializeField] float m_shakeMagnitude = 0.1f;
     //旋回速度
-    [SerializeField] float TRUN_SPEED = 1.0f;
+    [SerializeField] float m_trunSpeed = 1.0f;
     //着地エフェクト
     [SerializeReference] ParticleSystem m_shockWave;
     //歩行スピード
-    [SerializeField] float WALK_SPEED = 10.0f;
-    //ブースト移動スピード
-    [SerializeField] float BOOST_MOVE_SPEED = 15.0f;
+    [SerializeField] float m_walkSpeed = 10.0f;
     //着地硬直のタイマー
     float m_landingRigidityTimer = 0.0f;
     //着地硬直の時間
     [SerializeField] float LANDING_RIGIDITY_TIME = 0.25f;
-    //着地硬直のタイマーのフラグ
-    bool m_isRigidity = false;
 
     //X方向の移動量
     float m_velX;
@@ -42,6 +37,11 @@ public class RobotController : MonoBehaviour
     //着地フラグ
     bool m_isStanding;
 
+    //移動量
+    Vector3 vel;
+
+    //着地硬直のタイマーのフラグ
+    bool m_isRigidity = false;
 
 
     // Start is called before the first frame update
@@ -76,7 +76,7 @@ public class RobotController : MonoBehaviour
 
             if(m_jumpChargeTimer < 0.0f)
             {
-                rb.AddForce(0, JUMP_FORCE, 0, ForceMode.Impulse);
+                rb.AddForce(0, m_jumpForce, 0, ForceMode.Impulse);
                 m_isJump = false;
             }
         }
@@ -95,7 +95,7 @@ public class RobotController : MonoBehaviour
             }
         }
 
-        //着地しているかつ着地硬直がなければ移動、または旋回
+        //着地しているかつ着地硬直がなければ移動
         if (m_isStanding == true && m_isRigidity == false)
         {
             //左右移動
@@ -107,19 +107,6 @@ public class RobotController : MonoBehaviour
             if (Input.GetKey(KeyCode.W)) m_velZ = 1;
             else if (Input.GetKey(KeyCode.S)) m_velZ = -1;
             else m_velZ = 0.0f;
-
-            //右旋回
-            if (Input.GetKey(KeyCode.E))
-            {
-                trans.Rotate(new Vector3(0.0f, TRUN_SPEED * Time.deltaTime, 0.0f), Space.World);
-
-            }
-            //左旋回
-            if (Input.GetKey(KeyCode.Q))
-            {
-                trans.Rotate(new Vector3(0.0f, -TRUN_SPEED * Time.deltaTime, 0.0f), Space.World);
-            }
-
         }
 
         //var angles = new Vector3(this.transform.rotation.x, this.transform.rotation.y, this.transform.rotation.z);
@@ -137,18 +124,32 @@ public class RobotController : MonoBehaviour
         moveForward.Normalize();
 
         //歩行
-        if(Input.GetKey(KeyCode.LeftShift) != true)
-            rb.velocity = moveForward * WALK_SPEED + new Vector3(0, rb.velocity.y, 0);
+        rb.velocity = moveForward * m_walkSpeed + new Vector3(0, rb.velocity.y, 0);
         //スラスター移動
-        else rb.AddForce(moveForward * BOOST_MOVE_SPEED, ForceMode.Force);  
+        //rb.AddForce(moveForward * m_walkSpeed, ForceMode.Force);  
 
 
         //this.transform.position += this.transform.forward * m_velZ * m_walkSpeed * Time.deltaTime;
         //this.transform.position += this.transform.right * m_velX * m_walkSpeed * Time.deltaTime;
 
+        Debug.Log("aaa");
+        Debug.Log("aaa");
 
         //rb.velocity = vel;
 
+
+
+        //右旋回
+        if (Input.GetKey(KeyCode.E))
+        {
+            trans.Rotate(new Vector3(0.0f, m_trunSpeed, 0.0f),Space.World);
+
+        }
+        //左旋回
+        if(Input.GetKey(KeyCode.Q))
+        {
+            trans.Rotate(new Vector3(0.0f, -m_trunSpeed, 0.0f), Space.World);
+        }
     }
 
     private void FixedUpdate()
@@ -163,7 +164,7 @@ public class RobotController : MonoBehaviour
         m_isJump = false;
 
         //カメラを揺らす
-        cameraScript.Shake(CAMERA_SHAKE_DURATION, CAMERA_SHAKE_MAGUNITUDE);
+        cameraScript.Shake(m_shakeDuration, m_shakeMagnitude);
 
         //着地エフェクトの再生
         m_shockWave.Play();
