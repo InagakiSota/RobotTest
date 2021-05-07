@@ -199,17 +199,27 @@ public class RobotController : MonoBehaviour
 		//}
 
 		//左移動　X方向の移動速度を減算する
-		if (Input.GetKey(KeyCode.A))
+		else if (Input.GetKey(KeyCode.A))
 		{
 			m_velX -= 10.0f * Time.deltaTime;
 			//最大値を越えたら最大値を代入する
 			if (m_velX <= -BOOST_SPEED_MAX) m_velX = -BOOST_SPEED_MAX;
 		}
-		//else
-		//{
-		//	m_velX += 1.0f * Time.deltaTime;
-		//	if (m_velX >= 0.0f) m_velX = 0.0f;
-		//}
+		//左右どちらかの入力がなければ減速
+		else
+		{
+			if(m_velX < 0.0f)
+			{
+				m_velX += 1.0f;
+				if (m_velX >= 0.0f) m_velX = 0.0f;
+			}
+			else if (m_velX > 0.0f)
+			{
+				m_velX -= 1.0f;
+				if (m_velX <= 0.0f) m_velX = 0.0f;
+			}
+
+		}
 
 		//前移動　Z方向の移動速度を加算する
 		if (Input.GetKey(KeyCode.W))
@@ -218,23 +228,33 @@ public class RobotController : MonoBehaviour
 			//最大値を越えたら最大値を代入する
 			if (m_velZ >= BOOST_SPEED_MAX) m_velZ = BOOST_SPEED_MAX;
 		}
-		else
-		{
-			m_velZ -= 10.0f * Time.deltaTime;
-			if (m_velZ <= 0.0f) m_velZ = 0.0f;
-		}
+		//else
+		//{
+		//	m_velZ -= 10.0f * Time.deltaTime;
+		//	if (m_velZ <= 0.0f) m_velZ = 0.0f;
+		//}
 
 		//後移動　Z方向の移動速度を減算する
-		if (Input.GetKey(KeyCode.S))
+		else if (Input.GetKey(KeyCode.S))
 		{
 			m_velZ -= 10.0f * Time.deltaTime;
 			//最大値を越えたら最大値を代入する
 			if (m_velZ <= -BOOST_SPEED_MAX) m_velZ = -BOOST_SPEED_MAX;
 		}
+		//前後どちらかの入力がなければ減速
 		else
 		{
-			m_velZ += 10.0f * Time.deltaTime;
-			if (m_velZ >= 0.0f) m_velZ = 0.0f;
+			if (m_velZ < 0.0f)
+			{
+				m_velZ += 1.0f;
+				if (m_velZ >= 0.0f) m_velZ = 0.0f;
+			}
+			else if (m_velZ > 0.0f)
+			{
+				m_velZ -= 1.0f;
+				if (m_velZ <= 0.0f) m_velZ = 0.0f;
+			}
+
 		}
 
 	}
