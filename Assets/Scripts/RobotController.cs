@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class RobotController : MonoBehaviour
+public class RobotController_Unfinished : MonoBehaviour
 {
 	Rigidbody rb;
 	[SerializeField] float m_jumpForce;
@@ -67,30 +67,19 @@ public class RobotController : MonoBehaviour
 
 		Transform trans = this.transform;
 
-		//スペースキー入力でジャンプ
-		if(Input.GetKeyDown(KeyCode.Space) && m_isJump == false && m_jumpChargeTimer >= JUMP_CHARGE_TIME)
-		{
-			//ジャンプしたフラグを立てる
-			m_isJump = true;
-		}
-		if(m_isJump == true)
-		{
-			m_jumpChargeTimer -= Time.deltaTime;
+		///////////////////////////////
+		//ジャンプ関数
+		//ココ↓で呼び出す
+		Jump();
 
-			if(m_jumpChargeTimer < 0.0f)
-			{
-				rb.AddForce(0, m_jumpForce, 0, ForceMode.Impulse);
-				m_isJump = false;
-			}
-		}
-
-		//着地硬直の時間
-		if(m_isRigidity == true)
+		//着地硬直
+		if (m_isRigidity == true)
 		{
 			//着地したら移動量を無くす
 			rb.velocity = new Vector3(0.0f, 0.0f, 0.0f);
-			
+			//着地硬直のタイマーを減らす
 			m_landingRigidityTimer -= Time.deltaTime;
+			//着地硬直のタイマーが0になったら着地硬直を解除
 			if(m_landingRigidityTimer <= 0.0f)
 			{
 				m_isRigidity = false;
@@ -130,36 +119,20 @@ public class RobotController : MonoBehaviour
 
 		}
 
-		//var angles = new Vector3(this.transform.rotation.x, this.transform.rotation.y, this.transform.rotation.z);
-		//var direction = Quaternion.Euler(this.transform.eulerAngles) * Vector3.forward; 
-
 		//前方向のベクトルを求める
 		Vector3 moveForward = this.transform.forward * m_velZ + this.transform.right * m_velX;
 
-
-		//前方向のベクトルの正規化
-		//moveForward.Normalize();
-
 		//移動量に値を代入する
 		rb.velocity = moveForward + new Vector3(0, rb.velocity.y, 0);
-		//スラスター移動
-		//else rb.AddForce(moveForward * m_walkSpeed, ForceMode.Force);  
-
-
-		//this.transform.position += this.transform.forward * m_velZ * m_walkSpeed * Time.deltaTime;
-		//this.transform.position += this.transform.right * m_velX * m_walkSpeed * Time.deltaTime;
-
-		//rb.velocity = vel;
-
 
 
 	}
 
-	/// <summary>
+	//////////////////////////////////////
 	/// 歩行
 	/// 引数：なし
 	/// 戻り値：なし
-	/// </summary>
+	/// /////////////////////////////////
 	void Walk()
 	{
 		//左右移動
@@ -178,11 +151,11 @@ public class RobotController : MonoBehaviour
 	}
 
 
-	/// <summary>
-	///  ブースト移動
-	///  引数：なし
-	///  戻り値：なし
-	/// </summary>
+	//////////////////////////////////////
+	/// 歩行
+	/// 引数：なし
+	/// 戻り値：なし
+	/// /////////////////////////////////
 	void Boost()
 	{
 		//右移動　X方向の移動速度を加算する
@@ -228,12 +201,6 @@ public class RobotController : MonoBehaviour
 			//最大値を越えたら最大値を代入する
 			if (m_velZ >= BOOST_SPEED_MAX) m_velZ = BOOST_SPEED_MAX;
 		}
-		//else
-		//{
-		//	m_velZ -= 10.0f * Time.deltaTime;
-		//	if (m_velZ <= 0.0f) m_velZ = 0.0f;
-		//}
-
 		//後移動　Z方向の移動速度を減算する
 		else if (Input.GetKey(KeyCode.S))
 		{
@@ -255,6 +222,33 @@ public class RobotController : MonoBehaviour
 				if (m_velZ <= 0.0f) m_velZ = 0.0f;
 			}
 
+		}
+
+	}
+
+	///////////////////////////////
+	//ジャンプ
+	//引数：なし
+	//戻り値：なし
+	//////////////////////////////
+	void Jump()
+	{
+		//スペースキー入力でジャンプ
+		if (Input.GetKeyDown(KeyCode.Space) && m_isJump == false && m_jumpChargeTimer >= JUMP_CHARGE_TIME)
+		{
+			//ジャンプしたフラグを立てる
+			m_isJump = true;
+		}
+		if (m_isJump == true)
+		{
+			//チャージ時間を減らす
+			m_jumpChargeTimer -= Time.deltaTime;
+			//チャージ時間が0になったらジャンプする
+			if (m_jumpChargeTimer < 0.0f)
+			{
+				rb.AddForce(0, m_jumpForce, 0, ForceMode.Impulse);
+				m_isJump = false;
+			}
 		}
 
 	}
