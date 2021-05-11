@@ -2,9 +2,10 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class RobotController_Unfinished : MonoBehaviour
+public class RobotController : MonoBehaviour
 {
 	Rigidbody rb;
+	//ジャンプ力
 	[SerializeField] float m_jumpForce;
 	bool m_isJump;
 

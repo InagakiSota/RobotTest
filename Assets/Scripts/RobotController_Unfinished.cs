@@ -1,10 +1,13 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
-public class RobotController : MonoBehaviour
+public class RobotController_Unfinished : MonoBehaviour
 {
+
 	Rigidbody rb;
+	//ジャンプ力
 	[SerializeField] float m_jumpForce;
 	bool m_isJump;
 
@@ -32,6 +35,9 @@ public class RobotController : MonoBehaviour
 	//最大ブースト速度
 	[SerializeField] float BOOST_SPEED_MAX;
 
+	//ジャンプの溜めゲージのスライダー
+	[SerializeField] Slider m_boostSlider;
+
 	//X方向の移動量
 	float m_velX;
 	//Z方向の移動量
@@ -58,19 +64,21 @@ public class RobotController : MonoBehaviour
 		m_jumpChargeTimer = JUMP_CHARGE_TIME;
 		m_landingRigidityTimer = LANDING_RIGIDITY_TIME;
 		m_isRigidity = false;
+		m_boostSlider.maxValue = 2.0f;
+		m_boostSlider.gameObject.SetActive(false);
+		
 	}
 
 	// Update is called once per frame
 	void Update()
 	{
-		//var rot = this.transform.rotation;
 
 		Transform trans = this.transform;
 
 		///////////////////////////////
 		//ジャンプ関数
 		//ココ↓で呼び出す
-
+		Jump();
 
 
 		//着地硬直
@@ -230,22 +238,36 @@ public class RobotController : MonoBehaviour
 	//////////////////////////////
 	void Jump()
 	{
-		//スペースキー入力でジャンプ
-		if (Input.GetKeyDown(KeyCode.Space) && m_isJump == false && m_jumpChargeTimer >= JUMP_CHARGE_TIME)
+		////スペースキー入力でジャンプ
+		//if (Input.GetKeyDown(KeyCode.Space) && m_isJump == false && m_jumpChargeTimer >= JUMP_CHARGE_TIME)
+		//{
+		//	//ジャンプしたフラグを立てる
+		//	m_isJump = true;
+		//}
+		//if (m_isJump == true)
+		//{
+		//	//チャージ時間を減らす
+		//	m_jumpChargeTimer -= Time.deltaTime;
+		//	//チャージ時間が0になったらジャンプする
+		//	if (m_jumpChargeTimer < 0.0f)
+		//	{
+		//		rb.AddForce(0, m_jumpForce, 0, ForceMode.Impulse);
+		//		m_isJump = false;
+		//	}
+		//}
+
+		//スペースキー入力でジャンプ溜め
+		if(Input.GetKey(KeyCode.Space) && m_isJump == false && m_isStanding == true)
 		{
-			//ジャンプしたフラグを立てる
-			m_isJump = true;
+			m_boostSlider.value += 0.5f * Time.deltaTime;
+			//溜めゲージを表示する
+			m_boostSlider.gameObject.SetActive(true);
+
 		}
-		if (m_isJump == true)
+		//スペースキーリリースでジャンプ
+		if (Input.GetKeyUp(KeyCode.Space) && m_isJump == false && m_isStanding == true)
 		{
-			//チャージ時間を減らす
-			m_jumpChargeTimer -= Time.deltaTime;
-			//チャージ時間が0になったらジャンプする
-			if (m_jumpChargeTimer < 0.0f)
-			{
-				rb.AddForce(0, m_jumpForce, 0, ForceMode.Impulse);
-				m_isJump = false;
-			}
+			rb.AddForce(0, m_jumpForce * 1.0f + m_boostSlider.value, 0, ForceMode.Impulse);
 		}
 	}
 
@@ -271,6 +293,12 @@ public class RobotController : MonoBehaviour
 
 		//着地硬直のフラグを立てる
 		m_isRigidity = true;
+
+		//溜めゲージを非表示にする
+		m_boostSlider.gameObject.SetActive(false);
+
+		//溜めゲージを0にする
+		m_boostSlider.value = 0.0f;
 
 	}
 
