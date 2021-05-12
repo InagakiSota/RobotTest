@@ -8,15 +8,11 @@ public class RobotController_Unfinished : MonoBehaviour
 
 	Rigidbody rb;
 	//ジャンプ力
-	[SerializeField] float m_jumpForce;
+	[SerializeField] float JUMP_FORCE;
 	bool m_isJump;
 
 	public CameraController cameraScript;
 
-	//ジャンプの溜め時間
-	[SerializeField] float JUMP_CHARGE_TIME = 1.0f;
-	//ジャンプの溜め時間のタイマー
-	float m_jumpChargeTimer = 1.0f;
 	//カメラ振動の時間
 	[SerializeField] float m_shakeDuration = 0.25f;
 	//カメラ振動の強さ
@@ -52,6 +48,9 @@ public class RobotController_Unfinished : MonoBehaviour
 	//着地硬直のタイマーのフラグ
 	bool m_isRigidity = false;
 
+	//初期座標(リスポーン座標)
+	[SerializeField] Vector3 START_POS = new Vector3(0,20.0f,0);
+
 
 	// Start is called before the first frame update
 	void Start()
@@ -61,12 +60,11 @@ public class RobotController_Unfinished : MonoBehaviour
 
 		//変数の初期化
 		m_isJump = false;
-		m_jumpChargeTimer = JUMP_CHARGE_TIME;
 		m_landingRigidityTimer = LANDING_RIGIDITY_TIME;
 		m_isRigidity = false;
 		m_boostSlider.maxValue = 2.0f;
 		m_boostSlider.gameObject.SetActive(false);
-		
+		this.transform.position = START_POS;
 	}
 
 	// Update is called once per frame
@@ -75,24 +73,24 @@ public class RobotController_Unfinished : MonoBehaviour
 
 		Transform trans = this.transform;
 
-		///////////////////////////////
 		//ジャンプ関数
-		//ココ↓で呼び出す
 		Jump();
-
 
 		//着地硬直
 		if (m_isRigidity == true)
 		{
 			//着地したら移動量を無くす
-			rb.velocity = new Vector3(0.0f, 0.0f, 0.0f);
+			rb.velocity = Vector3.zero;
 			//着地硬直のタイマーを減らす
 			m_landingRigidityTimer -= Time.deltaTime;
 			//着地硬直のタイマーが0になったら着地硬直を解除
 			if(m_landingRigidityTimer <= 0.0f)
 			{
-				m_isRigidity = false;
-				m_landingRigidityTimer = LANDING_RIGIDITY_TIME;
+				///////////////////////////////////
+				//着地硬直解除の処理
+				//ココ↓に記述
+
+				///////////////////////////////////
 			}
 		}
 
@@ -113,14 +111,20 @@ public class RobotController_Unfinished : MonoBehaviour
 
 			//右旋回
 			if (Input.GetKey(KeyCode.E))
-			{   
-				trans.Rotate(new Vector3(0.0f, m_trunSpeed * Time.deltaTime, 0.0f), Space.World);
+			{
+				//////////////////////////////
+				//ココ↓に記述
+
+				//////////////////////////////
 
 			}
 			//左旋回
 			if (Input.GetKey(KeyCode.Q))
 			{
-				trans.Rotate(new Vector3(0.0f, -m_trunSpeed * Time.deltaTime, 0.0f), Space.World);
+				//////////////////////////////
+				//ココ↓に記述
+
+				//////////////////////////////
 			}
 
 		}
@@ -130,6 +134,13 @@ public class RobotController_Unfinished : MonoBehaviour
 
 		//移動量に値を代入する
 		rb.velocity = moveForward + new Vector3(0, rb.velocity.y, 0);
+
+		//場外に落ちたらリスポーン
+		if(this.transform.position.y < -10.0f)
+		{
+			this.transform.position = START_POS;
+			rb.velocity = Vector3.zero;
+		}
 
 	}
 
@@ -142,22 +153,46 @@ public class RobotController_Unfinished : MonoBehaviour
 	{
 		//左右移動
 		//右方向(+)に移動量を代入する
-		if (Input.GetKey(KeyCode.D)) m_velX = m_walkSpeed;
+		if (Input.GetKey(KeyCode.D))
+		{
+			//////////////////////////////
+			//ココ↓に記述
+
+			//////////////////////////////
+		}
 		//左方向(-)に移動量を代入する
-		else if (Input.GetKey(KeyCode.A)) m_velX = -m_walkSpeed;
+		else if (Input.GetKey(KeyCode.A))
+		{
+			//////////////////////////////
+			//ココ↓に記述
+
+			//////////////////////////////
+		}
 		else m_velX = 0.0f;
 
 		//前後移動
 		//前方向(+)に移動量を代入する
-		if (Input.GetKey(KeyCode.W)) m_velZ = m_walkSpeed;
+		if (Input.GetKey(KeyCode.W))
+		{
+			//////////////////////////////
+			//ココ↓に記述
+
+			//////////////////////////////
+		}
 		//後方向(-)に移動量を代入する
-		else if (Input.GetKey(KeyCode.S)) m_velZ = -m_walkSpeed;
+		else if (Input.GetKey(KeyCode.S))
+		{
+			//////////////////////////////
+			//ココ↓に記述
+
+			//////////////////////////////
+		}
 		else m_velZ = 0.0f;
 	}
 
 
 	//////////////////////////////////////
-	/// 歩行
+	/// ブースト移動
 	/// 引数：なし
 	/// 戻り値：なし
 	/// /////////////////////////////////
@@ -238,36 +273,25 @@ public class RobotController_Unfinished : MonoBehaviour
 	//////////////////////////////
 	void Jump()
 	{
-		////スペースキー入力でジャンプ
-		//if (Input.GetKeyDown(KeyCode.Space) && m_isJump == false && m_jumpChargeTimer >= JUMP_CHARGE_TIME)
-		//{
-		//	//ジャンプしたフラグを立てる
-		//	m_isJump = true;
-		//}
-		//if (m_isJump == true)
-		//{
-		//	//チャージ時間を減らす
-		//	m_jumpChargeTimer -= Time.deltaTime;
-		//	//チャージ時間が0になったらジャンプする
-		//	if (m_jumpChargeTimer < 0.0f)
-		//	{
-		//		rb.AddForce(0, m_jumpForce, 0, ForceMode.Impulse);
-		//		m_isJump = false;
-		//	}
-		//}
-
-		//スペースキー入力でジャンプ溜め
-		if(Input.GetKey(KeyCode.Space) && m_isJump == false && m_isStanding == true)
+		//スペースキー入力でジャンプのゲージ溜め
+		if(Input.GetKey(KeyCode.Space) && m_isJump == false && m_isStanding == true && m_isRigidity == false)
 		{
 			m_boostSlider.value += 0.5f * Time.deltaTime;
 			//溜めゲージを表示する
 			m_boostSlider.gameObject.SetActive(true);
 
 		}
+
+		//ジャンプ力を計算する
+		float jumpForce = JUMP_FORCE * (1.0f + m_boostSlider.value);
+
 		//スペースキーリリースでジャンプ
-		if (Input.GetKeyUp(KeyCode.Space) && m_isJump == false && m_isStanding == true)
+		if (Input.GetKeyUp(KeyCode.Space) && m_isJump == false && m_isStanding == true && m_isRigidity == false)
 		{
-			rb.AddForce(0, m_jumpForce * 1.0f + m_boostSlider.value, 0, ForceMode.Impulse);
+			//////////////////////////////
+			//ココ↓に記述
+
+			//////////////////////////////
 		}
 	}
 
@@ -276,20 +300,21 @@ public class RobotController_Unfinished : MonoBehaviour
 		//rb.AddForce(vel, ForceMode.Force);
 	}
 
+	//////////////////////////////////////
+	//着地した瞬間の処理
+	/// ////////////////////////////
 	private void OnTriggerEnter(Collider other)
 	{
 
 		//ジャンプのフラグを消す
 		m_isJump = false;
 
+		///////////////////////////////
 		//カメラを揺らす
-		cameraScript.Shake(m_shakeDuration, m_shakeMagnitude);
+		//ココ↓に記述
 
-		//着地エフェクトの再生
-		m_shockWave.Play();
+		///////////////////////////////
 
-		//ジャンプの溜め時間の設定
-		m_jumpChargeTimer = JUMP_CHARGE_TIME;
 
 		//着地硬直のフラグを立てる
 		m_isRigidity = true;

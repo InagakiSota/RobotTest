@@ -1,20 +1,17 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class RobotController : MonoBehaviour
 {
 	Rigidbody rb;
 	//ジャンプ力
-	[SerializeField] float m_jumpForce;
+	[SerializeField] float JUMP_FORCE;
 	bool m_isJump;
 
 	public CameraController cameraScript;
 
-	//ジャンプの溜め時間
-	[SerializeField] float JUMP_CHARGE_TIME = 1.0f;
-	//ジャンプの溜め時間のタイマー
-	float m_jumpChargeTimer = 1.0f;
 	//カメラ振動の時間
 	[SerializeField] float m_shakeDuration = 0.25f;
 	//カメラ振動の強さ
@@ -33,6 +30,10 @@ public class RobotController : MonoBehaviour
 	//最大ブースト速度
 	[SerializeField] float BOOST_SPEED_MAX;
 
+	//ジャンプの溜めゲージのスライダー
+	[SerializeField] Slider m_boostSlider;
+
+
 	//X方向の移動量
 	float m_velX;
 	//Z方向の移動量
@@ -47,6 +48,9 @@ public class RobotController : MonoBehaviour
 	//着地硬直のタイマーのフラグ
 	bool m_isRigidity = false;
 
+	//初期座標(リスポーン座標)
+	[SerializeField] Vector3 START_POS = new Vector3(0, 20.0f, 0);
+
 
 	// Start is called before the first frame update
 	void Start()
@@ -56,9 +60,12 @@ public class RobotController : MonoBehaviour
 
 		//変数の初期化
 		m_isJump = false;
-		m_jumpChargeTimer = JUMP_CHARGE_TIME;
 		m_landingRigidityTimer = LANDING_RIGIDITY_TIME;
 		m_isRigidity = false;
+		m_boostSlider.maxValue = 2.0f;
+		m_boostSlider.gameObject.SetActive(false);
+		this.transform.position = START_POS;
+
 	}
 
 	// Update is called once per frame
@@ -68,9 +75,7 @@ public class RobotController : MonoBehaviour
 
 		Transform trans = this.transform;
 
-		///////////////////////////////
 		//ジャンプ関数
-		//ココ↓で呼び出す
 		Jump();
 
 		//着地硬直
@@ -83,8 +88,13 @@ public class RobotController : MonoBehaviour
 			//着地硬直のタイマーが0になったら着地硬直を解除
 			if(m_landingRigidityTimer <= 0.0f)
 			{
+				///////////////////////////////////
+				//着地硬直解除の処理
+				//ココ↓に記述
 				m_isRigidity = false;
 				m_landingRigidityTimer = LANDING_RIGIDITY_TIME;
+				///////////////////////////////////
+
 			}
 		}
 
@@ -108,14 +118,21 @@ public class RobotController : MonoBehaviour
 
 			//右旋回
 			if (Input.GetKey(KeyCode.E))
-			{   
-				trans.Rotate(new Vector3(0.0f, m_trunSpeed * Time.deltaTime, 0.0f), Space.World);
+			{
+				///////////////////////////////////
+				//ココ↓に記述
+				trans.Rotate(new Vector3(0.0f, m_trunSpeed * Time.deltaTime, 0.0f));
+				///////////////////////////////////
+
 
 			}
 			//左旋回
 			if (Input.GetKey(KeyCode.Q))
 			{
-				trans.Rotate(new Vector3(0.0f, -m_trunSpeed * Time.deltaTime, 0.0f), Space.World);
+				///////////////////////////////////
+				//ココ↓に記述
+				trans.Rotate(new Vector3(0.0f, -m_trunSpeed * Time.deltaTime, 0.0f));
+				///////////////////////////////////
 			}
 
 		}
@@ -126,7 +143,12 @@ public class RobotController : MonoBehaviour
 		//移動量に値を代入する
 		rb.velocity = moveForward + new Vector3(0, rb.velocity.y, 0);
 
-
+		//場外に落ちたらリスポーン
+		if (this.transform.position.y < -10.0f)
+		{
+			this.transform.position = START_POS;
+			rb.velocity = Vector3.zero;
+		}
 	}
 
 	//////////////////////////////////////
@@ -138,22 +160,47 @@ public class RobotController : MonoBehaviour
 	{
 		//左右移動
 		//右方向(+)に移動量を代入する
-		if (Input.GetKey(KeyCode.D)) m_velX = m_walkSpeed;
+		if (Input.GetKey(KeyCode.D))
+		{
+			//////////////////////////////
+			//ココ↓に記述
+			m_velX = m_walkSpeed;
+			//////////////////////////////
+		}
 		//左方向(-)に移動量を代入する
-		else if (Input.GetKey(KeyCode.A)) m_velX = -m_walkSpeed;
+		else if (Input.GetKey(KeyCode.A))
+		{
+			//////////////////////////////
+			//ココ↓に記述
+			m_velX = -m_walkSpeed;
+			//////////////////////////////
+		}
 		else m_velX = 0.0f;
 
 		//前後移動
 		//前方向(+)に移動量を代入する
-		if (Input.GetKey(KeyCode.W)) m_velZ = m_walkSpeed;
+		if (Input.GetKey(KeyCode.W))
+		{
+			//////////////////////////////
+			//ココ↓に記述
+			m_velZ = m_walkSpeed;
+			//////////////////////////////
+
+		}
 		//後方向(-)に移動量を代入する
-		else if (Input.GetKey(KeyCode.S)) m_velZ = -m_walkSpeed;
+		else if (Input.GetKey(KeyCode.S))
+		{
+			//////////////////////////////
+			//ココ↓に記述
+			m_velZ = -m_walkSpeed;
+			//////////////////////////////
+		}
 		else m_velZ = 0.0f;
 	}
 
 
 	//////////////////////////////////////
-	/// 歩行
+	/// ブースト移動
 	/// 引数：なし
 	/// 戻り値：なし
 	/// /////////////////////////////////
@@ -166,11 +213,6 @@ public class RobotController : MonoBehaviour
 			//最大値を越えたら最大値を代入する
 			if (m_velX >= BOOST_SPEED_MAX) m_velX = BOOST_SPEED_MAX;
 		}
-		//else
-		//{
-		//	m_velX -= 1.0f * Time.deltaTime;
-		//	if (m_velX <= 0.0f) m_velX = 0.0f;
-		//}
 
 		//左移動　X方向の移動速度を減算する
 		else if (Input.GetKey(KeyCode.A))
@@ -234,27 +276,30 @@ public class RobotController : MonoBehaviour
 	//////////////////////////////
 	void Jump()
 	{
-		//スペースキー入力でジャンプ
-		if (Input.GetKeyDown(KeyCode.Space) && m_isJump == false && m_jumpChargeTimer >= JUMP_CHARGE_TIME)
+		//スペースキー入力でジャンプのゲージ溜め
+		if (Input.GetKey(KeyCode.Space) && m_isJump == false && m_isStanding == true && m_isRigidity == false)
 		{
-			//ジャンプしたフラグを立てる
-			m_isJump = true;
-		}
-		if (m_isJump == true)
-		{
-			//チャージ時間を減らす
-			m_jumpChargeTimer -= Time.deltaTime;
-			//チャージ時間が0になったらジャンプする
-			if (m_jumpChargeTimer < 0.0f)
-			{
-				rb.AddForce(0, m_jumpForce, 0, ForceMode.Impulse);
-				m_isJump = false;
-			}
+			m_boostSlider.value += 0.5f * Time.deltaTime;
+			//溜めゲージを表示する
+			m_boostSlider.gameObject.SetActive(true);
+
 		}
 
+		//ジャンプ力を計算する
+		float jumpForce = JUMP_FORCE * (1.0f + m_boostSlider.value);
+
+		//スペースキーリリースでジャンプ
+		if (Input.GetKeyUp(KeyCode.Space) && m_isJump == false && m_isStanding == true && m_isRigidity == false)
+		{
+			//////////////////////////////
+			//ココ↓に記述
+			rb.AddForce(0, jumpForce, 0, ForceMode.Impulse);
+			//////////////////////////////
+
+		}
 	}
 
-	private void FixedUpdate()
+		private void FixedUpdate()
 	{
 		//rb.AddForce(vel, ForceMode.Force);
 	}
@@ -265,17 +310,24 @@ public class RobotController : MonoBehaviour
 		//ジャンプのフラグを消す
 		m_isJump = false;
 
+		///////////////////////////////
 		//カメラを揺らす
+		//ココ↓に記述
 		cameraScript.Shake(m_shakeDuration, m_shakeMagnitude);
+		///////////////////////////////
+
 
 		//着地エフェクトの再生
-		m_shockWave.Play();
-
-		//ジャンプの溜め時間の設定
-		m_jumpChargeTimer = JUMP_CHARGE_TIME;
+		//m_shockWave.Play();
 
 		//着地硬直のフラグを立てる
 		m_isRigidity = true;
+
+		//溜めゲージを非表示にする
+		m_boostSlider.gameObject.SetActive(false);
+
+		//溜めゲージを0にする
+		m_boostSlider.value = 0.0f;
 
 	}
 

@@ -29,10 +29,10 @@ public class CameraController : MonoBehaviour
 
         while(elapsed < duration)
         {
-            //var x = pos.x + Random.Range(-1.0f, 1.0f) * magnitude;
+            var x = pos.x + Random.Range(-1.0f, 1.0f) * magnitude;
             var y = pos.y + Random.Range(-1.0f, 1.0f) * magnitude;
 
-            transform.localPosition = new Vector3(pos.x, y, pos.z);
+            transform.localPosition = new Vector3(x, y, pos.z);
 
             elapsed += Time.deltaTime;
 
