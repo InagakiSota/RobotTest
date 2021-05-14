@@ -322,7 +322,7 @@ MonoBehaviour:
   SHAKE_DURATION: 0.5
   SHAKE_MAGNITUDE: 0.5
   TRUN_SPEED: 20
-  WALK_SPEED: 10
+  WALK_SPEED: 30
   BOOST_SPEED_MAX: 200
   BOOST_SPEED_UP_VALUE: 10
   BOOST_GAGE_MAX: 100
@@ -1526,7 +1526,7 @@ ParticleSystem:
         m_PostInfinity: 2
         m_RotationOrder: 4
     randomizeRotationDirection: 0
-    maxNumParticles: 50
+    maxNumParticles: 100
     size3D: 0
     rotation3D: 0
     gravityModifier:

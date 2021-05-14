@@ -647,7 +647,7 @@ ParticleSystem:
     startSpeed:
       serializedVersion: 2
       minMaxState: 0
-      scalar: 10
+      scalar: 50
       minScalar: 5
       maxCurve:
         serializedVersion: 2
@@ -701,7 +701,7 @@ ParticleSystem:
       serializedVersion: 2
       minMaxState: 0
       minColor: {r: 1, g: 1, b: 1, a: 1}
-      maxColor: {r: 1, g: 1, b: 1, a: 1}
+      maxColor: {r: 0.31132078, g: 0.1170292, b: 0.04258634, a: 1}
       maxGradient:
         serializedVersion: 2
         key0: {r: 1, g: 1, b: 1, a: 1}
@@ -1079,7 +1079,7 @@ ParticleSystem:
         m_PostInfinity: 2
         m_RotationOrder: 4
     randomizeRotationDirection: 0
-    maxNumParticles: 1000
+    maxNumParticles: 100
     size3D: 0
     rotation3D: 0
     gravityModifier:
@@ -5531,21 +5531,21 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   cameraScript: {fileID: 2078764820}
+  m_shockWave: {fileID: 583737027}
+  m_jumpSlider: {fileID: 489361174}
+  m_boostCapSlider: {fileID: 1900273361}
+  m_boostGageImage: {fileID: 22836292}
   JUMP_FORCE: 10
   LANDING_RIGIDITY_TIME: 0.5
-  m_jumpSlider: {fileID: 489361174}
   JUMP_GAGE_MAX: 2
   JUMP_CHARGE_UP_VALUE: 0.5
   JUMP_GAGE_CONSUMPTION: 10
   SHAKE_DURATION: 0.25
   SHAKE_MAGNITUDE: 0.1
-  m_trunSpeed: 20
-  m_shockWave: {fileID: 583737027}
+  TRUN_SPEED: 1
   WALK_SPEED: 10
   BOOST_SPEED_MAX: 200
   BOOST_SPEED_UP_VALUE: 10
-  m_boostCapSlider: {fileID: 1900273361}
-  m_boostGageImage: {fileID: 22836292}
   BOOST_GAGE_MAX: 100
   BOOST_GAGE_DOWN_VALUE: 5
   BOOST_GAGE_UP_VALUE: 3

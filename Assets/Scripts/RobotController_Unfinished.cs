@@ -107,7 +107,8 @@ public class RobotController_Unfinished : MonoBehaviour
 				///////////////////////////////////
 				//着地硬直解除の処理
 				//ココ↓に記述
-
+				//m_isRigidity = false;
+				//m_landingRigidityTimer = LANDING_RIGIDITY_TIME;
 				///////////////////////////////////
 			}
 		}
@@ -133,7 +134,7 @@ public class RobotController_Unfinished : MonoBehaviour
 			{
 				//////////////////////////////
 				//ココ↓に記述
-
+				//trans.Rotate(new Vector3(0.0f, TRUN_SPEED * Time.deltaTime, 0.0f));
 				//////////////////////////////
 
 			}
@@ -142,7 +143,7 @@ public class RobotController_Unfinished : MonoBehaviour
 			{
 				//////////////////////////////
 				//ココ↓に記述
-
+				//trans.Rotate(new Vector3(0.0f, -TRUN_SPEED * Time.deltaTime, 0.0f));
 				//////////////////////////////
 			}
 
@@ -179,7 +180,7 @@ public class RobotController_Unfinished : MonoBehaviour
 		{
 			//////////////////////////////
 			//ココ↓に記述
-
+			//m_velX = WALK_SPEED;
 			//////////////////////////////
 		}
 		//左方向(-)に移動量を代入する
@@ -187,7 +188,7 @@ public class RobotController_Unfinished : MonoBehaviour
 		{
 			//////////////////////////////
 			//ココ↓に記述
-
+			//m_velX = -WALK_SPEED;
 			//////////////////////////////
 		}
 		else m_velX = 0.0f;
@@ -198,7 +199,7 @@ public class RobotController_Unfinished : MonoBehaviour
 		{
 			//////////////////////////////
 			//ココ↓に記述
-
+			//m_velZ = WALK_SPEED;
 			//////////////////////////////
 		}
 		//後方向(-)に移動量を代入する
@@ -206,7 +207,7 @@ public class RobotController_Unfinished : MonoBehaviour
 		{
 			//////////////////////////////
 			//ココ↓に記述
-
+			//m_velZ = -WALK_SPEED;
 			//////////////////////////////
 		}
 		else m_velZ = 0.0f;
@@ -225,7 +226,7 @@ public class RobotController_Unfinished : MonoBehaviour
 		{
 			//////////////////////////////
 			//ココ↓に記述
-
+			//m_velX += BOOST_SPEED_UP_VALUE * Time.deltaTime;
 			//////////////////////////////
 			//最大値を越えたら最大値を代入する
 			if (m_velX >= BOOST_SPEED_MAX) m_velX = BOOST_SPEED_MAX;
@@ -236,7 +237,7 @@ public class RobotController_Unfinished : MonoBehaviour
 		{
 			//////////////////////////////
 			//ココ↓に記述
-
+			//m_velX -= BOOST_SPEED_UP_VALUE * Time.deltaTime;
 			//////////////////////////////
 			//最大値を越えたら最大値を代入する
 			if (m_velX <= -BOOST_SPEED_MAX) m_velX = -BOOST_SPEED_MAX;
@@ -262,7 +263,7 @@ public class RobotController_Unfinished : MonoBehaviour
 		{
 			//////////////////////////////
 			//ココ↓に記述
-
+			//m_velZ += BOOST_SPEED_UP_VALUE * Time.deltaTime;
 			//////////////////////////////
 			//最大値を越えたら最大値を代入する
 			if (m_velZ >= BOOST_SPEED_MAX) m_velZ = BOOST_SPEED_MAX;
@@ -272,7 +273,7 @@ public class RobotController_Unfinished : MonoBehaviour
 		{
 			//////////////////////////////
 			//ココ↓に記述
-
+			//m_velZ -= BOOST_SPEED_UP_VALUE * Time.deltaTime;
 			//////////////////////////////
 			//最大値を越えたら最大値を代入する
 			if (m_velZ <= -BOOST_SPEED_MAX) m_velZ = -BOOST_SPEED_MAX;
@@ -319,7 +320,7 @@ public class RobotController_Unfinished : MonoBehaviour
 		{
 			//////////////////////////////
 			//ココ↓に記述
-
+			//rb.AddForce(0, jumpForce, 0, ForceMode.Impulse);
 			//////////////////////////////
 
 			//ブースト容量を消費
@@ -345,13 +346,13 @@ public class RobotController_Unfinished : MonoBehaviour
 		///////////////////////////////
 		//カメラを揺らす
 		//ココ↓に記述
-
+		//cameraScript.Shake(SHAKE_DURATION, SHAKE_MAGNITUDE);
 		///////////////////////////////
 
 		///////////////////////////////
 		//着地エフェクトの再生
 		//ココ↓に記述
-
+		//m_shockWave.Play();
 		///////////////////////////////
 
 		//着地硬直のフラグを立てる
