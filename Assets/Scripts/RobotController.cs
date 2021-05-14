@@ -249,12 +249,12 @@ public class RobotController : MonoBehaviour
 		{
 			if(m_velX < 0.0f)
 			{
-				m_velX += 1.0f;
+				m_velX += 10.0f * Time.deltaTime;
 				if (m_velX >= 0.0f) m_velX = 0.0f;
 			}
 			else if (m_velX > 0.0f)
 			{
-				m_velX -= 1.0f;
+				m_velX -= 10.0f * Time.deltaTime;
 				if (m_velX <= 0.0f) m_velX = 0.0f;
 			}
 
@@ -281,12 +281,12 @@ public class RobotController : MonoBehaviour
 		{
 			if (m_velZ < 0.0f)
 			{
-				m_velZ += 1.0f;
+				m_velZ += 10.0f * Time.deltaTime;
 				if (m_velZ >= 0.0f) m_velZ = 0.0f;
 			}
 			else if (m_velZ > 0.0f)
 			{
-				m_velZ -= 1.0f;
+				m_velZ -= 10.0f * Time.deltaTime;
 				if (m_velZ <= 0.0f) m_velZ = 0.0f;
 			}
 		}

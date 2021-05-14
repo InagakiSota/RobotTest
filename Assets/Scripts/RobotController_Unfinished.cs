@@ -246,12 +246,12 @@ public class RobotController_Unfinished : MonoBehaviour
 		{
 			if(m_velX < 0.0f)
 			{
-				m_velX += 1.0f;
+				m_velX += 50.0f * Time.deltaTime;
 				if (m_velX >= 0.0f) m_velX = 0.0f;
 			}
 			else if (m_velX > 0.0f)
 			{
-				m_velX -= 1.0f;
+				m_velX -= 50.0f * Time.deltaTime;
 				if (m_velX <= 0.0f) m_velX = 0.0f;
 			}
 
@@ -282,12 +282,12 @@ public class RobotController_Unfinished : MonoBehaviour
 		{
 			if (m_velZ < 0.0f)
 			{
-				m_velZ += 1.0f;
+				m_velZ += 50.0f * Time.deltaTime;
 				if (m_velZ >= 0.0f) m_velZ = 0.0f;
 			}
 			else if (m_velZ > 0.0f)
 			{
-				m_velZ -= 1.0f;
+				m_velZ -= 50.0f * Time.deltaTime;
 				if (m_velZ <= 0.0f) m_velZ = 0.0f;
 			}
 
@@ -321,6 +321,10 @@ public class RobotController_Unfinished : MonoBehaviour
 			//ココ↓に記述
 
 			//////////////////////////////
+
+			//ブースト容量を消費
+			m_boostCapSlider.value -= JUMP_GAGE_CONSUMPTION;
+
 		}
 	}
 

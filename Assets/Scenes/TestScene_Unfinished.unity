@@ -319,15 +319,15 @@ MonoBehaviour:
   JUMP_GAGE_MAX: 2
   JUMP_CHARGE_UP_VALUE: 0.5
   JUMP_GAGE_CONSUMPTION: 10
-  SHAKE_DURATION: 0.25
-  SHAKE_MAGNITUDE: 0.1
-  TRUN_SPEED: 1
+  SHAKE_DURATION: 0.5
+  SHAKE_MAGNITUDE: 0.5
+  TRUN_SPEED: 20
   WALK_SPEED: 10
   BOOST_SPEED_MAX: 200
   BOOST_SPEED_UP_VALUE: 10
   BOOST_GAGE_MAX: 100
-  BOOST_GAGE_DOWN_VALUE: 1
-  BOOST_GAGE_UP_VALUE: 3
+  BOOST_GAGE_DOWN_VALUE: 2
+  BOOST_GAGE_UP_VALUE: 4
   START_POS: {x: 0, y: 20, z: 0}
 --- !u!1 &527144909
 GameObject:
@@ -1094,7 +1094,7 @@ ParticleSystem:
     startSpeed:
       serializedVersion: 2
       minMaxState: 0
-      scalar: 10
+      scalar: 50
       minScalar: 5
       maxCurve:
         serializedVersion: 2
@@ -1148,7 +1148,7 @@ ParticleSystem:
       serializedVersion: 2
       minMaxState: 0
       minColor: {r: 1, g: 1, b: 1, a: 1}
-      maxColor: {r: 1, g: 1, b: 1, a: 1}
+      maxColor: {r: 0.3207547, g: 0.09020407, b: 0, a: 1}
       maxGradient:
         serializedVersion: 2
         key0: {r: 1, g: 1, b: 1, a: 1}
@@ -1526,7 +1526,7 @@ ParticleSystem:
         m_PostInfinity: 2
         m_RotationOrder: 4
     randomizeRotationDirection: 0
-    maxNumParticles: 1000
+    maxNumParticles: 50
     size3D: 0
     rotation3D: 0
     gravityModifier:
